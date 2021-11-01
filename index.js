@@ -1,12 +1,14 @@
 const express = require('express')
+require('dotenv').config()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 // require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectId
 
-const uri =
-  'mongodb+srv://myself:133075@cluster0.ukmrv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ukmrv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+
+// console.log(uri)
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -27,9 +29,7 @@ async function run(){
   await client.connect()
   const EventsCollection = client.db('volunteerNetwork').collection('events')
   const ordersCollection = client.db('volunteerNetwork').collection('orders')
-  const volunteerCollection = client
-    .db('volunteerNetwork')
-    .collection('volunteer')
+  
 
   // add Events
   app.post('/addEvent', async (req, res) => {
@@ -49,11 +49,7 @@ async function run(){
   })
 
   // add volunteer
-  app.post('/addVolunteer', async (req, res) => {
-    console.log(req.body)
-    const result = await volunteerCollection.insertOne(req.body)
-    res.send(result)
-  })
+
   app.post('/orders', async (req, res) => {
     console.log(req.body)
     console.log('dekhi')
@@ -63,11 +59,6 @@ async function run(){
 
   // get all volunteer
 
-  app.get('/allVolunteer', async (req, res) => {
-    const result = await volunteerCollection.find({}).toArray()
-    res.send(result)
-    console.log(result)
-  })
   // get all events
 
   app.get('/allEvents', async (req, res) => {
@@ -83,19 +74,21 @@ async function run(){
 
   app.delete('/deleteEvent/:id', async (req, res) => {
     console.log(req.params.id)
+    console.log('ses eta')
     const result = await EventsCollection.deleteOne({
       _id: ObjectId(req.params.id),
     })
     res.send(result)
   })
-  app.delete('/deleteVolunteer/:id', async (req, res) => {
-    console.log(req.params.id)
-    const result = await EventsCollection.deleteOne({
+  app.delete('/deleteOrder/:id', async (req, res) => {
+    
+    const result = await ordersCollection.deleteOne({
       _id: ObjectId(req.params.id),
     })
-    console.log('deleted')
+    console.log(result)
     res.send(result)
   })
+ 
 
   // my events
 
