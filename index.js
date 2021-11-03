@@ -80,10 +80,10 @@ async function run() {
       res.send(result)
     })
     app.delete('/deleteOrder/:id', async (req, res) => {
+      console.log(req.params.id)
       const result = await ordersCollection.deleteOne({
         _id: ObjectId(req.params.id),
       })
-      console.log(result)
       res.send(result)
     })
 
