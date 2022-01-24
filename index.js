@@ -29,6 +29,7 @@ async function run() {
     await client.connect()
     const EventsCollection = client.db('volunteerNetwork').collection('events')
     const ordersCollection = client.db('volunteerNetwork').collection('orders')
+    const usersCollection = client.db('volunteerNetwork').collection('users')
 
     // add Events
     app.post('/addEvent', async (req, res) => {
@@ -79,15 +80,56 @@ async function run() {
       })
       res.send(result)
     })
-    app.delete('/deleteOrder/:id', async (req, res) => {
+    app.delete('/orders/:id', async (req, res) => {
       console.log(req.params.id)
-      const result = await ordersCollection.deleteOne({
+      console.log('ses eta')
+      const query = {
         _id: ObjectId(req.params.id),
-      })
-      res.send(result)
+      }
+      console.log(query)
+      const result = await ordersCollection.deleteOne(query)
+      console.log(result)
+      res.json(result)
     })
 
+
+
+
+       app.post('/users', async (req, res) => {
+         const user = req.body
+         const result = await usersCollection.insertOne(user)
+         console.log(result)
+         res.json(result)
+       })
+
+
+
+        app.put('/users', async (req, res) => {
+          const user = req.body
+          const filter = { email: user.email }
+          const options = { upsert: true }
+          const updateDoc = { $set: user }
+          const result = await usersCollection.updateOne(
+            filter,
+            updateDoc,
+            options
+          )
+          res.json(result)
+        })
+
+
+          app.put('/users/admin', async (req, res) => {
+            const user = req.body
+            const filter = { email: user.email }
+            const updateDoc = { $set: {role: 'admin'} }
+            const result = await usersCollection.updateOne(
+              filter,
+              updateDoc
+            )
+            res.json(result)
+          })
     // my events
+    
 
     app.get('/allEvents/:email', async (req, res) => {
       const result = await EventsCollection.find({
