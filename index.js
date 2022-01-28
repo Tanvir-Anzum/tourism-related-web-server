@@ -128,8 +128,23 @@ async function run() {
             )
             res.json(result)
           })
+       
+
+          // checking if user is admin
+           
+          app.get('/users/:email', async (req, res) => {
+            const email = req.params.email
+            const query = { email: email }
+            const user = await usersCollection.findOne(query)
+            let isAdmin = false
+            if (user?.role === 'admin') {
+              isAdmin = true
+            }
+            res.json({ admin: isAdmin })
+          })
+
+
     // my events
-    
 
     app.get('/allEvents/:email', async (req, res) => {
       const result = await EventsCollection.find({
