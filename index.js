@@ -73,25 +73,25 @@ async function run() {
 
     // delete event
 
-    app.delete('/deleteEvent/:id', async (req, res) => {
+    app.delete('/deleteOrder/:id', async (req, res) => {
       console.log(req.params.id)
       console.log('ses eta')
-      const result = await EventsCollection.deleteOne({
+      const result = await ordersCollection.deleteOne({
         _id: ObjectId(req.params.id),
       })
-      res.send(result)
-    })
-    app.delete('/orders/:id', async (req, res) => {
-      console.log(req.params.id)
-      console.log('ses eta')
-      const query = {
-        _id: ObjectId(req.params.id),
-      }
-      console.log(query)
-      const result = await ordersCollection.deleteOne(query)
-      console.log(result)
       res.json(result)
     })
+    // app.delete('/orders/:id', async (req, res) => {
+    //   console.log(req.params.id)
+    //   console.log('ses a')
+    //   const query = {
+    //     _id: ObjectId(req.params.id),
+    //   }
+    //   console.log(query)
+    //   const result = await ordersCollection.deleteOne(query)
+    //   console.log(result)
+    //   res.json(result)
+    // })
 
 
           // reviews
