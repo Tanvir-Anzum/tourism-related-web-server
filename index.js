@@ -30,6 +30,7 @@ async function run() {
     const EventsCollection = client.db('volunteerNetwork').collection('events')
     const ordersCollection = client.db('volunteerNetwork').collection('orders')
     const usersCollection = client.db('volunteerNetwork').collection('users')
+    const reviewCollection = client.db('volunteerNetwork').collection('review')
 
     // add Events
     app.post('/addEvent', async (req, res) => {
@@ -93,7 +94,18 @@ async function run() {
     })
 
 
+          // reviews
 
+           app.post('/reviews', async (req, res) => {
+             const review = req.body
+             const result = await reviewCollection.insertOne(review)
+             res.json(result)
+           })
+
+            app.get('/reviews', async (req, res) => {
+              const result = await reviewCollection.find({}).toArray()
+              res.send(result)
+            })
 
        app.post('/users', async (req, res) => {
          const user = req.body
