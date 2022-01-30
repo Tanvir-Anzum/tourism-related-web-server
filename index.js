@@ -81,17 +81,17 @@ async function run() {
       })
       res.json(result)
     })
-    // app.delete('/orders/:id', async (req, res) => {
-    //   console.log(req.params.id)
-    //   console.log('ses a')
-    //   const query = {
-    //     _id: ObjectId(req.params.id),
-    //   }
-    //   console.log(query)
-    //   const result = await ordersCollection.deleteOne(query)
-    //   console.log(result)
-    //   res.json(result)
-    // })
+    app.delete('/orders/:id', async (req, res) => {
+      console.log(req.params.id)
+      console.log('ses a')
+      const query = {
+        _id: ObjectId(req.params.id),
+      }
+      console.log(query)
+      const result = await ordersCollection.deleteOne(query)
+      console.log(result)
+      res.json(result)
+    })
 
 
           // reviews
