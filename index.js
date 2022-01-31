@@ -166,6 +166,19 @@ async function run() {
             res.json(result)
           })
        
+          app.put('/status', async (req, res) => {
+            const user = req.body
+            console.log('user',user)
+            const filter = { _id: ObjectId(user.id) }
+            console.log(filter)
+            const updateDoc = { $set: {status: 'pending'} }
+            const result = await ordersCollection.updateOne(
+              filter,
+              updateDoc
+            )
+            res.json(result)
+          })
+       
 
           // checking if user is admin
            
