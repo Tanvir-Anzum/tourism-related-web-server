@@ -152,6 +152,17 @@ async function run() {
             )
             res.json(result)
           })
+
+          app.put('/orders', async (req, res) => {
+            const user = req.body
+            const filter = { _id: user.id }
+            const updateDoc = { $set: {status: 'delivered'} }
+            const result = await ordersCollection.updateOne(
+              filter,
+              updateDoc
+            )
+            res.json(result)
+          })
        
 
           // checking if user is admin
