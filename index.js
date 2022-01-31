@@ -155,8 +155,8 @@ async function run() {
 
           app.put('/orders', async (req, res) => {
             const user = req.body
-            const filter = { _id: user.id }
-            const updateDoc = { $set: {status: 'delivered'} }
+            const filter = { _id: user._id }
+            const updateDoc = { $set: {stats: 'delivered'} }
             const result = await ordersCollection.updateOne(
               filter,
               updateDoc
